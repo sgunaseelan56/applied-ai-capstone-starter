@@ -69,10 +69,25 @@ each milestone. Candidates are `pydantic`, `litellm`, `qdrant-client`,
 libraries and `pytest`. Choose compatible versions and commit a lockfile from
 your chosen package manager. Do not install every framework before M1.
 
-Copy `.env.example` to `.env` and add necessary secrets locally. Implement
-configuration loading in `src/capstone/settings.py`; no automatic loading is
-provided. Resolve paths from the project root instead of the current working
-directory. Keep model IDs, embedding dimensions and data paths configurable.
+Copy `.env.example` to `.env` and add necessary secrets locally. The shared
+LLM settings loader reads provider values from that project-root file or the
+process environment; other application settings still need to be implemented.
+Resolve paths from the project root instead of the current working directory.
+Keep model IDs, embedding dimensions and data paths configurable.
+
+### Groq for M1
+
+The shared LLM client can use Groq for schema-guided JSON generation. Copy
+`.env.example` to `.env`, set `GROQ_API_KEY`, and confirm that `GROQ_MODEL` is
+available to your Groq account. Install the optional SDK dependency with:
+
+```bash
+python -m pip install -e ".[groq]"
+```
+
+The M1 notebook also supports `LLM_PROVIDER=mock` for offline runs; its
+deterministic mock parser does not require a Groq key. The application runtime
+and the Data Toolkit use separate environment files and model settings.
 
 ## 3. Folder structure and responsibilities
 
